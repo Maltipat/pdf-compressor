@@ -1,0 +1,68 @@
+YOU
+│
+│  POST http://localhost:8080/api/compress
+│  Body: file = TVS.pdf (33.8 MB)
+│
+▼
+PdfCompressionController.compressPdf()
+│
+│  validateMultipartFile(file)
+│    → file is not empty ✓
+│    → filename ends with .pdf ✓
+│
+│  requestId = "0eb9e2f5-198a-4a71-ade3-42b0bdeb714e"
+│  inputPath = /tmp/pdf-compressor-http/0eb9e2f5_input.pdf
+│  outputPath = /tmp/pdf-compressor-http/0eb9e2f5_compressed.pdf
+│
+│  file.transferTo(inputPath)  ← saves TVS.pdf to temp folder
+│
+▼
+PdfCompressionService.compress(inputPath, outputPath)
+│
+│  source = TVS.pdf (33,800,000 bytes = 33.8 MB)
+│  document = Loader.loadPDF(source)  ← open the PDF
+│  pageCount = 6
+│
+│  ── PASS 1: Image Processing ──
+│  Page 1: found image "Im1" (3000x2000 px, 8MB)
+│    → resize to 1600x1067 px (proportional)
+│    → re-encode as JPEG at 65% quality
+│    → new size: 280 KB
+│    → replaced in PDF ✓
+│  Page 2–6: same process...
+│  imagesResampled = 6
+│
+│  ── PASS 2: Stream Compression ──
+│  Found 42 content streams
+│  12 already FLATE-compressed → skipped
+│  30 compressed with FLATE → done ✓
+│
+│  ── PASS 3: Metadata Pruning ──
+│  XMP metadata removed (was 450 KB) ✓
+│  Document info cleared ✓
+│
+│  ── PASS 4: Compressed Save ──
+│  PDF rewritten to outputPath
+│  Dead objects removed ✓
+│
+│  compressedSize = 1,219,851 bytes = 1.2 MB
+│
+▼
+CompressionResult
+│  originalSizeBytes = 35,409,133
+│  compressedSizeBytes = 1,219,851
+│  compressionRatioPercent = 96.55%
+│  pageCount = 6
+│  imagesResampled = 6
+│
+▼
+Controller sends response
+│  Headers:
+│    X-Original-Size-Bytes: 35409133
+│    X-Compressed-Size-Bytes: 1219851
+│    X-Compression-Ratio: 96.55
+│    Content-Disposition: attachment; filename="TVS_compressed.pdf"
+│  Body: compressed PDF binary
+│
+▼
+YOU receive 1.2 MB compressed PDF ✓
