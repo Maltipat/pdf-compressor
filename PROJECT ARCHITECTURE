@@ -1,0 +1,32 @@
+pdf-compressor/
+│
+├── pom.xml                          ← Shopping list of tools we need
+├── src/
+│   ├── main/
+│   │   ├── java/com/pdfcompressor/
+│   │   │   │
+│   │   │   ├── PdfCompressorApplication.java    ← Main entrance door
+│   │   │   │
+│   │   │   ├── config/
+│   │   │   │   └── CompressionProperties.java   ← Settings/configuration
+│   │   │   │
+│   │   │   ├── controller/
+│   │   │   │   └── PdfCompressionController.java ← Security guard (receives requests)
+│   │   │   │
+│   │   │   ├── service/
+│   │   │   │   ├── PdfCompressionService.java   ← The actual worker
+│   │   │   │   └── CliCompressionRunner.java    ← Terminal mode worker
+│   │   │   │
+│   │   │   ├── model/
+│   │   │   │   └── CompressionResult.java       ← Result report card
+│   │   │   │
+│   │   │   └── exception/
+│   │   │       ├── CompressionException.java    ← "Something went wrong" signal
+│   │   │       └── InvalidPdfException.java     ← "This is not a valid PDF" signal
+│   │   │
+│   │   └── resources/
+│   │       └── application.properties           ← App settings (port, file size limits)
+│   │
+│   └── test/                                    ← Automated tests
+│
+└── target/                                      ← Compiled output (auto-generated)
