@@ -1,0 +1,24 @@
+You (Postman)
+    │
+    │ POST /api/compress  (with PDF attached)
+    ▼
+PdfCompressionController.compressPdf()
+    │ validate file
+    │ save to temp folder
+    │
+    ▼
+PdfCompressionService.compress()
+    │
+    ├── Pass 1: processImages()       ← shrink all images
+    ├── Pass 2: compressContentStreams() ← zip text streams
+    ├── Pass 3: pruneMetadata()       ← remove hidden bloat
+    └── Pass 4: saveWithCompression() ← rewrite file cleanly
+    │
+    ▼
+CompressionResult (original=33.8MB, compressed=1.2MB, saved=96%)
+    │
+    ▼
+Controller sends compressed PDF back to you
+    │
+    ▼
+You download compressed PDF ✓
